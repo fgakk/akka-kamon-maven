@@ -137,13 +137,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjtools</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -167,8 +160,6 @@
                         <excludes> <!-- Following artifacts are weaved by aspectj and are already in the fat jar -->
                             <exclude>com.typesafe.akka:akka-actor_${scala.tools.version}</exclude>
                             <exclude>io.kamon:kamon-akka-2.5_${scala.tools.version}</exclude>
-                            <!-- since we already done weaving we do not need aspectjrt in the uber jar -->
-                            <exclude>org.aspectj:aspectjrts</exclude>
                         </excludes>
                     </artifactSet>
                     <filters>

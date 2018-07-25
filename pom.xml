@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.fgakk.samples</groupId>
     <artifactId>akka-kamon-maven</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <description>Example Project for Moniting an Akka App with Kamon</description>
     <packaging>jar</packaging>
 

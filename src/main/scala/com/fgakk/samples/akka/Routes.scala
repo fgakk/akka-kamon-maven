@@ -6,7 +6,7 @@ import akka.pattern.ask
 import akka.http.scaladsl.server.{Directives, Route}
 import org.slf4j.Logger
 
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.concurrent.duration.FiniteDuration
 
 trait Routes extends Directives {
@@ -19,7 +19,7 @@ trait Routes extends Directives {
   def routes: Route =
     path("notes") {
       get {
-        val notes = (notesService ? GetAllNotes())(timeout)
+        val response: Future[HttpResponse] = (notesService ? GetAllNotes())(timeout)
           .mapTo[Map[Int, String]]
           .map(
             m => {
@@ -33,7 +33,7 @@ trait Routes extends Directives {
               HttpResponse(code).withEntity(detailsJson)
             }
           )
-        complete("Get request for all notes")
+        complete(response)
       } ~
         post {
           complete("Post request for a note")

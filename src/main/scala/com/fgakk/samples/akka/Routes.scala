@@ -36,18 +36,42 @@ trait Routes extends Directives {
         complete(response)
       } ~
         post {
-          complete("Post request for a note")
+          formField("value") { value =>
+            val response: Future[HttpResponse] = (notesService ? CreateNote(value))(timeout)
+              .mapTo[NoteCreated]
+              .map(
+                m => {
+                  val code = StatusCodes.OK
+                  HttpResponse(code).withEntity(s"note crate with id ${m.id}")
+                }
+              )
+            complete(response)
+          }
+
         }
     } ~
       path("notes" / IntNumber) { id =>
         get {
-          complete(s"Get request for note with $id")
+          val response: Future[HttpResponse] = (notesService ? GetNote(id))(timeout)
+            .mapTo[Option[String]]
+            .map {
+              case Some(value) =>
+                val code = StatusCodes.OK // TODO error handling ???
+                HttpResponse(code).withEntity(value)
+              case None =>
+                val code = StatusCodes.NotFound // TODO error handling ???
+                HttpResponse(code)
+            }
+          complete(response)
         } ~
-          put {
-            complete(s"Put request for note with $id")
-          } ~
           delete {
-            complete(s"Delete request received with $id")
+            val response: Future[HttpResponse] = (notesService ? DeleteNote(id))(timeout)
+              .mapTo[NoteDeleted]
+              .map(m => {
+                val code = StatusCodes.OK // TODO error handling ???
+                HttpResponse(code).withEntity("Note deleted")
+              })
+            complete(response)
           }
       }
 

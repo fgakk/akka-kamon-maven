@@ -14,22 +14,25 @@ object NotesService {
 }
 
 class NotesService(map: mutable.Map[Int, String], counter: AtomicInteger) extends Actor {
+  var idSeq: Int = 1
+
   override def receive: Receive = {
     case request: CreateNote => {
       val id = counter.incrementAndGet()
       map.put(id, request.note)
+      idSeq += 1
       sender() ! NoteCreated(id)
     }
     case request: GetNote => sender() ! map.get(request.id)
-    case request: GetAllNotes =>
+    case _: GetAllNotes =>
       sender() ! map.toMap
     case request: DeleteNote =>
       map.remove(request.id)
-      sender() ! NoteDeleted
+      sender() ! NoteDeleted()
   }
 }
 
-case class CreateNote(id: Int, note: String)
+case class CreateNote(note: String)
 
 case class GetNote(id: Int)
 

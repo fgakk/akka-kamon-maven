@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.fgakk.samples</groupId>
     <artifactId>akka-kamon-maven</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <description>Example Project for Moniting an Akka App with Kamon</description>
     <packaging>jar</packaging>
 
@@ -64,7 +64,11 @@
             <artifactId>kamon-akka-2.5_${scala.tools.version}</artifactId>
             <version>${kamon.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.kamon</groupId>
+            <artifactId>kamon-akka-http-2.5_${scala.tools.version}</artifactId>
+            <version>${kamon.version}</version>
+        </dependency>
         <!-- KAMON PROMETHEUS -->
         <dependency>
             <groupId>io.kamon</groupId>
